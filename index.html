@@ -1,0 +1,2664 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Theo dõi Chuyển đổi số PVEP 2026–2030</title>
+<style>
+  :root{
+    /* PVEP / Petrovietnam brand: xanh lá #006838 → navy indigo #2e3192 (ombre giao thoa) */
+    --navy:#23286b; --navy2:#2e3192; --blue:#2e3192; --blue-l:#e9e6f7;
+    --teal:#00843d; --ink:#16203a; --muted:#5b6577; --line:#e4e8ef; --bg:#eef3f1;
+    --green:#006838; --amber:#E0982A; --red:#d8584e; --slate:#94a3b8;
+    --pA:#006838; --pB:#0e9e8f; --pC:#6b4fc7; --pD:#E0982A; --pE:#2e3192;
+    --shadow:0 1px 2px rgba(20,40,60,.06),0 8px 24px rgba(20,40,60,.07);
+    --shadow-lg:0 8px 40px rgba(20,40,60,.15);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
+  .wrap{max-width:1440px;margin:0 auto;padding:0 20px 60px}
+  header.top{background:linear-gradient(115deg,#00843d 0%,#006838 34%,#0a5a52 56%,#262d7a 100%);color:#fff;padding:22px 0 18px;position:relative;overflow:hidden;border-bottom:3px solid #00a651}
+  header.top::after{content:"";position:absolute;inset:0;background:radial-gradient(820px 320px at 82% -45%,rgba(46,49,146,.55),transparent 62%),radial-gradient(620px 260px at 8% 130%,rgba(0,166,81,.40),transparent 60%);pointer-events:none}
+  header.top .wrap{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+  header.top .brand{display:flex;align-items:center;gap:16px}
+  header.top .logo{flex:none;display:flex;align-items:center}
+  header.top .logo img{height:56px;display:block}
+  header.top h1{font-size:21px;font-weight:700;letter-spacing:.2px}
+  header.top .sub{font-size:12.5px;color:#d7ecdc;margin-top:4px;max-width:760px}
+  .asof{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:8px 12px;font-size:12.5px;display:flex;align-items:center;gap:8px}
+  .asof input{border:none;border-radius:6px;padding:4px 6px;font-size:12.5px;font-family:inherit}
+  .asof label{color:#d7ecdc}
+  nav.tabs{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--line);box-shadow:var(--shadow);margin-bottom:22px}
+  nav.tabs .wrap{display:flex;gap:2px;padding:0 20px;overflow-x:auto}
+  nav.tabs button{background:none;border:none;padding:14px 18px;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;font-family:inherit;transition:.15s}
+  nav.tabs button:hover{color:var(--navy)}
+  nav.tabs button.active{color:var(--navy);border-bottom-color:var(--blue)}
+  section.view{display:none;animation:fade .25s ease}
+  section.view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  h2.sec{font-size:16px;font-weight:700;color:var(--navy);margin:6px 0 14px;display:flex;align-items:center;gap:8px}
+  h2.sec .tag{font-size:11px;font-weight:600;color:var(--muted);background:var(--blue-l);padding:2px 8px;border-radius:20px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:18px}
+  .grid{display:grid;gap:16px}
+  /* KPI */
+  .kpis{grid-template-columns:repeat(6,1fr);margin-bottom:18px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:14px 16px;position:relative;overflow:hidden}
+  .kpi .v{font-size:26px;font-weight:800;line-height:1.1;background:linear-gradient(120deg,#006838,#2e3192);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .kpi::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#006838,#00a651 45%,#2e3192)}
+  .kpi .l{font-size:11.5px;color:var(--muted);margin-top:4px;font-weight:600}
+  .kpi .bar{position:absolute;left:0;top:0;bottom:0;width:4px}
+  .kpi.b1 .bar{background:var(--blue)} .kpi.b2 .bar{background:var(--teal)}
+  .kpi.b3 .bar{background:var(--amber)} .kpi.b4 .bar{background:var(--red)}
+  .kpi.b5 .bar{background:var(--green)} .kpi.b6 .bar{background:var(--navy)}
+  .two{grid-template-columns:1.3fr 1fr}
+  .three{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}.two,.three{grid-template-columns:1fr}}
+  .ctitle{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:14px}
+  .ctitle small{font-weight:500;color:var(--muted);font-size:11.5px}
+  /* legend */
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:10px;align-items:center}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .chip{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;color:#fff}
+  /* pillar bars */
+  .pbar{margin-bottom:13px}
+  .pbar .row{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px}
+  .pbar .row b{color:var(--ink)}
+  .track{height:9px;background:#eef2f7;border-radius:6px;overflow:hidden;position:relative}
+  .track .plan{position:absolute;height:100%;border-radius:6px;opacity:.32}
+  .track .act{position:absolute;height:100%;border-radius:6px}
+  /* table */
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  .toolbar input,.toolbar select{font-family:inherit;font-size:13px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+  .toolbar input[type=search]{min-width:220px}
+  .btn{font-family:inherit;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:8px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--ink)}
+  .btn:hover{background:var(--bg)}
+  .btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .btn.primary:hover{background:#20256e}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  thead th{position:sticky;top:0;z-index:2;background:#f8fafc;text-align:left;padding:9px 10px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;border-bottom:2px solid var(--line);cursor:pointer;white-space:nowrap}
+  tbody td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+  tbody tr:hover{background:#f8fafc}
+  tr.parent{background:#f0f5fb}
+  tr.parent td{font-weight:700;color:var(--navy)}
+  tr.parent:hover{background:#e8f1fb}
+  .mini{height:7px;width:80px;background:#eef2f7;border-radius:5px;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:6px}
+  .mini i{display:block;height:100%}
+  .flag{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:6px}
+  .editpct{width:52px;font-family:inherit;font-size:12px;padding:3px 5px;border:1px solid var(--line);border-radius:6px}
+  .editst{font-family:inherit;font-size:11.5px;padding:3px 4px;border:1px solid var(--line);border-radius:6px;max-width:130px}
+  /* gantt */
+  .ganttwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+  .gantt{min-width:1100px;position:relative}
+  .grow{display:grid;grid-template-columns:230px 1fr;border-bottom:1px solid #f1f5f9;align-items:center}
+  .grow:hover{background:#f8fafc}
+  .grow.ghead{background:var(--navy);color:#fff;position:sticky;top:0;z-index:5}
+  .grow.ghead .glabel{color:#fff;font-weight:700}
+  .grow.pinit{background:#eef4fb}
+  .glabel{padding:7px 10px;font-size:12px;border-right:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .glabel.sub{padding-left:22px;color:var(--muted);font-size:11.5px}
+  .gtrack{position:relative;height:30px}
+  .qgrid{position:absolute;inset:0;display:flex}
+  .qcell{flex:1;border-right:1px solid #f1f5f9;font-size:9.5px;color:#cbd5e1;text-align:center;padding-top:3px}
+  .qcell.yr{border-right:1px solid #cbd5e1}
+  .gbar{position:absolute;top:7px;height:16px;border-radius:4px;cursor:pointer;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+  .gbar .fill{position:absolute;left:0;top:0;bottom:0;background:rgba(0,0,0,.28)}
+  .gbar.crit{outline:2px solid var(--red);outline-offset:1px}
+  .gbar.initbar{height:13px;top:8px;background:var(--navy)!important;border-radius:3px}
+  .gmile{position:absolute;top:6px;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:12px solid var(--navy);transform:translateX(-7px)}
+  .todayline{position:absolute;top:0;bottom:0;width:2px;background:var(--red);z-index:6}
+  .todayline:after{content:'Hôm nay';position:absolute;top:-1px;left:3px;font-size:9px;color:var(--red);font-weight:700;background:#fff;padding:0 3px}
+  /* swimlane */
+  .swim{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff;padding-bottom:6px}
+  .swiminner{min-width:1100px}
+  .swimhead{display:grid;grid-template-columns:180px 1fr;border-bottom:2px solid var(--line)}
+  .swimhead .yr{display:flex}
+  .swimhead .yr span{flex:1;text-align:center;font-size:12px;font-weight:700;color:var(--navy);padding:8px 0;border-left:1px solid var(--line)}
+  .swimrow{display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f1f5f9;min-height:64px}
+  .swimlbl{padding:10px;font-size:12.5px;font-weight:700;color:#fff;display:flex;align-items:center}
+  .swimtrack{position:relative;padding:8px 0}
+  .swimbar{position:absolute;height:22px;border-radius:5px;color:#fff;font-size:10.5px;font-weight:600;padding:3px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;box-shadow:var(--shadow)}
+  .swimgrid{position:absolute;inset:0;display:flex;pointer-events:none}
+  .swimgrid span{flex:1;border-left:1px solid #f1f5f9}
+  /* critical path list */
+  .cplist{counter-reset:cp}
+  .cpitem{display:flex;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;margin-bottom:9px;background:#fff;align-items:center}
+  .cpitem .num{flex:none;width:26px;height:26px;border-radius:50%;background:var(--red);color:#fff;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+  .cpitem .arrow{color:var(--slate)}
+  .alert{border-left:4px solid var(--amber);background:#fffbeb;padding:12px 14px;border-radius:0 10px 10px 0;margin-bottom:10px}
+  .alert.red{border-color:var(--red);background:#fef2f2}
+  .alert.blue{border-color:var(--blue);background:var(--blue-l)}
+  .alert h4{font-size:13px;margin-bottom:4px;color:var(--ink)}
+  .alert ul{margin:6px 0 0 18px;font-size:12.5px;color:var(--muted)}
+  .alert li{margin-bottom:3px}
+  .note{font-size:11.5px;color:var(--muted);margin-top:8px;font-style:italic}
+  footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:30px;padding-top:18px;border-top:1px solid var(--line)}
+  .tip{position:fixed;z-index:100;background:var(--navy);color:#fff;font-size:11.5px;padding:8px 11px;border-radius:8px;max-width:280px;box-shadow:var(--shadow-lg);pointer-events:none;opacity:0;transition:opacity .12s;line-height:1.45}
+  .tip b{color:#9fc2f0}
+  .pill-status{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo"><img src="PVEP.png" alt="PETROVIETNAM PVEP"></div>
+      <div>
+        <h1>BÁO CÁO TIẾN ĐỘ CHUYỂN ĐỔI SỐ PVEP · GIAI ĐOẠN 2026–2030</h1>
+        <div class="sub">Theo dõi thực hiện QĐ 2475/QĐ-TDKT (Kế hoạch tổng thể hệ thống CNTT) &amp; QĐ 2476/QĐ-TDKT (Lộ trình CĐS) · Dashboard quản trị dự án trình HĐTV</div>
+      </div>
+    </div>
+    <div class="asof">
+      <label>Ngày báo cáo:</label>
+      <input type="date" id="asof" value="2026-06-09">
+    </div>
+  </div>
+</header>
+<nav class="tabs">
+  <div class="wrap">
+    <button data-v="overview" class="active">Tổng quan</button>
+    <button data-v="roadmap">Lộ trình tổng thể</button>
+    <button data-v="gantt">Gantt &amp; Đường găng</button>
+    <button data-v="table">Bảng theo dõi (RAG)</button>
+    <button data-v="ksnb">Cảnh báo &amp; Kiến nghị KSNB</button>
+  </div>
+</nav>
+<div class="wrap">
+
+  <!-- OVERVIEW -->
+  <section class="view active" id="overview">
+    <div class="grid kpis" id="kpis"></div>
+    <div class="grid two" style="margin-bottom:18px">
+      <div class="card">
+        <div class="ctitle">Đường cong tiến độ (S-curve) — Kế hoạch luỹ kế vs Thực tế <small>· % công việc hoàn thành theo thời gian</small></div>
+        <div id="scurve"></div>
+        <div class="legend">
+          <span><i style="background:var(--blue)"></i>Kế hoạch luỹ kế</span>
+          <span><i style="background:var(--green)"></i>Thực tế (đã cập nhật)</span>
+          <span><i style="background:var(--red)"></i>Mốc ngày báo cáo</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ctitle">Cơ cấu trạng thái công việc</div>
+        <div id="donut" style="display:flex;align-items:center;gap:18px;justify-content:center"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Tiến độ theo 5 trụ cột chiến lược <small>· thanh mờ = kế hoạch đến ngày báo cáo · thanh đậm = thực tế</small></div>
+      <div id="pillars" style="margin-top:6px"></div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section class="view" id="roadmap">
+    <h2 class="sec">Lộ trình tổng thể 22 sáng kiến số <span class="tag">Swimlane theo trụ cột · 2026–2030</span></h2>
+    <div class="swim"><div class="swiminner" id="swim"></div></div>
+    <div class="legend" style="margin-top:14px">
+      <span><i style="background:var(--pA)"></i>A. Tối ưu CN số E&amp;P</span>
+      <span><i style="background:var(--pB)"></i>B. Quản trị doanh nghiệp</span>
+      <span><i style="background:var(--pC)"></i>C. Hỗ trợ vận hành</span>
+      <span><i style="background:var(--pD)"></i>D. Nền tảng &amp; hạ tầng</span>
+      <span><i style="background:var(--pE)"></i>E. Con người số</span>
+      <span style="margin-left:8px">◆ = mốc Go-live / hoàn thành sáng kiến</span>
+    </div>
+  </section>
+
+  <!-- GANTT -->
+  <section class="view" id="gantt">
+    <h2 class="sec">Sơ đồ Gantt chi tiết &amp; Đường găng <span class="tag" id="gcount"></span></h2>
+    <div class="toolbar">
+      <select id="gfilter">
+        <option value="all">Tất cả trụ cột</option>
+        <option value="A">A · Tối ưu CN số E&P</option>
+        <option value="B">B · Quản trị doanh nghiệp</option>
+        <option value="C">C · Hỗ trợ vận hành</option>
+        <option value="D">D · Nền tảng & hạ tầng</option>
+        <option value="E">E · Con người số</option>
+      </select>
+      <label style="font-size:12.5px;display:flex;align-items:center;gap:6px"><input type="checkbox" id="gcrit"> Chỉ hiện đường găng</label>
+      <span class="legend" style="margin:0">
+        <span><i style="background:var(--blue)"></i>Chuẩn bị</span>
+        <span><i style="background:var(--teal)"></i>Triển khai</span>
+        <span><i style="background:var(--green)"></i>Nghiệm thu/Vận hành</span>
+        <span><i style="background:var(--navy)"></i>Nhiệm vụ tổng</span>
+        <span><i style="border:2px solid var(--red);background:#fff"></i>Đường găng</span>
+      </span>
+    </div>
+    <div class="ganttwrap"><div class="gantt" id="gantt-body"></div></div>
+    <p class="note">Phần nền mờ trong thanh = % hoàn thành thực tế đã cập nhật. Vạch đỏ dọc = ngày báo cáo. Bấm vào thanh để xem chi tiết.</p>
+  </section>
+
+  <!-- TABLE -->
+  <section class="view" id="table">
+    <h2 class="sec">Bảng theo dõi tiến độ (RAG status) <span class="tag">cập nhật trực tiếp được</span></h2>
+    <div class="toolbar">
+      <input type="search" id="tsearch" placeholder="Tìm mã CV, nhiệm vụ, đơn vị...">
+      <select id="tpillar"><option value="all">Tất cả trụ cột</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option></select>
+      <select id="tstatus">
+        <option value="all">Tất cả trạng thái</option>
+        <option>Chưa bắt đầu</option><option>Đang thực hiện</option><option>Hoàn thành</option><option>Cần cập nhật</option>
+      </select>
+      <select id="trag"><option value="all">Tất cả RAG</option><option value="red">🔴 Chậm nhiều</option><option value="amber">🟡 Chậm nhẹ/Cần CN</option><option value="green">🟢 Đúng tiến độ</option></select>
+      <button class="btn" id="exportcsv">⤓ Xuất CSV</button>
+      <button class="btn" id="resetedits">↺ Đặt lại số liệu nhập</button>
+    </div>
+    <div class="card" style="padding:0;overflow:auto;max-height:74vh">
+      <table id="rag"><thead></thead><tbody></tbody></table>
+    </div>
+    <p class="note">% Hoàn thành và Trạng thái có thể sửa trực tiếp trong bảng; số liệu lưu trên trình duyệt này (localStorage) và phản ánh sang mọi biểu đồ. Dùng "Xuất CSV" để đưa số liệu trở lại file Excel gốc.</p>
+  </section>
+
+  <!-- KSNB -->
+  <section class="view" id="ksnb">
+    <h2 class="sec">Góc Kiểm soát nội bộ — Cảnh báo &amp; Kiến nghị <span class="tag">tự động theo ngày báo cáo</span></h2>
+    <div class="grid two">
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="ctitle">⚠️ Nhiệm vụ chậm so với kế hoạch</div>
+          <div id="behind"></div>
+        </div>
+        <div class="card">
+          <div class="ctitle">🔄 Công việc cần các Ban cập nhật số liệu</div>
+          <div id="needupdate"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="ctitle">🛤️ Đường găng — chuỗi quyết định tiến độ toàn chương trình</div>
+          <div id="cplist" class="cplist"></div>
+        </div>
+        <div class="card">
+          <div class="ctitle">💰 Tập trung ngân sách &amp; rủi ro trọng yếu</div>
+          <div id="risks"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+<div class="tip" id="tip"></div>
+<footer>Nguồn dữ liệu: <b>KẾ HOẠCH QUẢN LÝ &amp; THEO DÕI CÔNG VIỆC CHUYỂN ĐỔI SỐ PVEP — GIAI ĐOẠN 2026–2030.xlsx</b> · Căn cứ QĐ 2475 &amp; QĐ 2476/QĐ-TDKT · Mốc tham chiếu kế hoạch 05/06/2026. Dashboard mang tính theo dõi quản trị, số liệu thực tế do các Ban cập nhật.</footer>
+
+<script>
+const RAW = [
+    {
+        "id":  "A1",
+        "pillar":  "A. Tối ưu công nghệ số trong hoạt động E\u0026P",
+        "task":  "Nền tảng dữ liệu E\u0026P tích hợp",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "CN TTKT (ITC)",
+        "coord":  "Ban Thăm dò / Ban Công nghệ Mỏ / Ban PT Khai thác",
+        "start":  "2026-01-01",
+        "end":  "2028-12-31",
+        "dep":  "",
+        "prio":  "Cao",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Hợp nhất dữ liệu địa chất, địa vật lý, khoan, khai thác về nền tảng tập trung, chuẩn hóa, liên thông; nền móng cho AI/ML, IAM, IOC.",
+        "issue":  ""
+    },
+    {
+        "id":  "A1.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Khảo sát hiện trạng \u0026 xác định yêu cầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-06-30",
+        "dep":  "D2, D3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A1.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập đề cương/FS \u0026 phê duyệt chủ trương đầu tư",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-07-01",
+        "end":  "2026-12-31",
+        "dep":  "A1.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A1.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập dự toán, HSMT \u0026 tổ chức đấu thầu, lựa chọn nhà thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-01-01",
+        "end":  "2027-06-30",
+        "dep":  "A1.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A1.4",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Thiết kế giải pháp \u0026 triển khai/cấu hình hệ thống",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-07-01",
+        "end":  "2027-12-31",
+        "dep":  "A1.3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A1.5",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Tích hợp, di trú dữ liệu \u0026 kiểm thử (SIT/UAT)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2028-01-01",
+        "end":  "2028-06-30",
+        "dep":  "A1.4",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A1.6",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Đào tạo, nghiệm thu \u0026 đưa vào vận hành (Go-live)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2028-07-01",
+        "end":  "2028-12-31",
+        "dep":  "A1.5",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A2",
+        "pillar":  "A. Tối ưu công nghệ số trong hoạt động E\u0026P",
+        "task":  "Ứng dụng AI/ML hỗ trợ hoạt động chuyên môn E\u0026P",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Ban Thăm dò / Ban Công nghệ Mỏ",
+        "coord":  "Ban PT Khai thác / CN TTKT",
+        "start":  "2027-01-01",
+        "end":  "2030-12-31",
+        "dep":  "",
+        "prio":  "Cao",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "AI/ML hỗ trợ minh giải tài liệu, dự báo vỉa, tối ưu khai thác trên nền dữ liệu E\u0026P đã chuẩn hóa.",
+        "issue":  ""
+    },
+    {
+        "id":  "A2.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Chuẩn bị, lập kế hoạch \u0026 đấu thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-01-01",
+        "end":  "2028-03-31",
+        "dep":  "A1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A2.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Triển khai, cấu hình \u0026 tích hợp hệ thống",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2028-04-01",
+        "end":  "2029-09-30",
+        "dep":  "A2.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A2.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Kiểm thử, đào tạo, nghiệm thu \u0026 vận hành",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2029-10-01",
+        "end":  "2030-12-31",
+        "dep":  "A2.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A3",
+        "pillar":  "A. Tối ưu công nghệ số trong hoạt động E\u0026P",
+        "task":  "Hệ thống Mô hình mỏ tích hợp (IAM)",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Ban PT Khai thác",
+        "coord":  "Ban Công nghệ Mỏ",
+        "start":  "2028-01-01",
+        "end":  "2029-12-31",
+        "dep":  "",
+        "prio":  "Cao",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Mô hình mỏ tích hợp phục vụ quản lý \u0026 tối ưu phát triển khai thác mỏ.",
+        "issue":  ""
+    },
+    {
+        "id":  "A3.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Chuẩn bị, lập kế hoạch \u0026 đấu thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2028-01-01",
+        "end":  "2028-09-30",
+        "dep":  "A1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A3.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Triển khai, cấu hình \u0026 tích hợp hệ thống",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2028-10-01",
+        "end":  "2029-03-31",
+        "dep":  "A3.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A3.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Kiểm thử, đào tạo, nghiệm thu \u0026 vận hành",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2029-04-01",
+        "end":  "2029-12-31",
+        "dep":  "A3.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A4",
+        "pillar":  "A. Tối ưu công nghệ số trong hoạt động E\u0026P",
+        "task":  "Trung tâm vận hành tích hợp (IOC)",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Ban PT Khai thác",
+        "coord":  "CN TTKT / Ban Công nghệ Mỏ",
+        "start":  "2027-01-01",
+        "end":  "2028-12-31",
+        "dep":  "",
+        "prio":  "Cao",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Trung tâm điều hành tích hợp giám sát vận hành mỏ theo thời gian thực.",
+        "issue":  ""
+    },
+    {
+        "id":  "A4.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Chuẩn bị, lập kế hoạch \u0026 đấu thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-01-01",
+        "end":  "2027-09-30",
+        "dep":  "A1, A3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A4.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Triển khai, cấu hình \u0026 tích hợp hệ thống",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-10-01",
+        "end":  "2028-03-31",
+        "dep":  "A4.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A4.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Kiểm thử, đào tạo, nghiệm thu \u0026 vận hành",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2028-04-01",
+        "end":  "2028-12-31",
+        "dep":  "A4.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A5",
+        "pillar":  "A. Tối ưu công nghệ số trong hoạt động E\u0026P",
+        "task":  "Hệ thống quản lý An toàn, sức khỏe \u0026 môi trường (HSE)",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Ban Công nghệ \u0026 An toàn môi trường",
+        "coord":  "Ban PT Khai thác",
+        "start":  "2027-01-01",
+        "end":  "2028-12-31",
+        "dep":  "",
+        "prio":  "Cao",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Số hóa quản lý HSE, giám sát tuân thủ chỉ số ESG.",
+        "issue":  ""
+    },
+    {
+        "id":  "A5.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Chuẩn bị, lập kế hoạch \u0026 đấu thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-01-01",
+        "end":  "2027-09-30",
+        "dep":  "",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A5.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Triển khai, cấu hình \u0026 tích hợp hệ thống",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-10-01",
+        "end":  "2028-03-31",
+        "dep":  "A5.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "A5.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Kiểm thử, đào tạo, nghiệm thu \u0026 vận hành",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2028-04-01",
+        "end":  "2028-12-31",
+        "dep":  "A5.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B1",
+        "pillar":  "B. Hiện đại hóa quản trị doanh nghiệp",
+        "task":  "Hệ thống quản trị nguồn lực doanh nghiệp ERP core",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Văn phòng / Phòng CNTT \u0026 CĐS",
+        "coord":  "Ban KT-Kế toán / TC Đầu tư / QTNNL / các Ban nghiệp vụ",
+        "start":  "2026-01-01",
+        "end":  "2027-12-31",
+        "dep":  "",
+        "prio":  "Cao",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "ERP lõi (Tài chính-Kế toán, Mua sắm, Kho-Vật tư, Ngân sách...) thay thế SunSystem rời rạc; trục xương sống quản trị.",
+        "issue":  ""
+    },
+    {
+        "id":  "B1.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Khảo sát, chuẩn hóa quy trình nghiệp vụ \u0026 xác định yêu cầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-06-30",
+        "dep":  "D1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B1.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập FS, lựa chọn mô hình triển khai \u0026 phê duyệt chủ trương đầu tư",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-09-30",
+        "dep":  "B1.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B1.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập HSMT, đấu thầu \u0026 lựa chọn nhà thầu triển khai",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-07-01",
+        "end":  "2026-12-31",
+        "dep":  "B1.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B1.4",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Thiết kế giải pháp \u0026 cấu hình phân hệ GĐ1 (TC-KT, Mua sắm)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-01-01",
+        "end":  "2027-06-30",
+        "dep":  "B1.3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B1.5",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Tích hợp, di trú dữ liệu \u0026 kiểm thử (SIT/UAT)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-07-01",
+        "end":  "2027-09-30",
+        "dep":  "B1.4",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B1.6",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Đào tạo, nghiệm thu \u0026 Go-live",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-10-01",
+        "end":  "2027-12-31",
+        "dep":  "B1.5",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B2",
+        "pillar":  "B. Hiện đại hóa quản trị doanh nghiệp",
+        "task":  "Hệ thống quản lý trực tuyến ĐT, QLDA \u0026 QLTC",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Ban Tài chính Đầu tư / Ban KH \u0026 QLDA",
+        "coord":  "Phòng CNTT \u0026 CĐS",
+        "start":  "2026-01-01",
+        "end":  "2026-12-31",
+        "dep":  "",
+        "prio":  "Cao",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Đã triển khai từ 2025 — năm 2026 hoàn thiện, mở rộng \u0026 vận hành ổn định.",
+        "issue":  ""
+    },
+    {
+        "id":  "B2.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Rà soát hiện trạng \u0026 xác định hạng mục hoàn thiện",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-03-31",
+        "dep":  "",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Cần cập nhật",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B2.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Hoàn thiện/mở rộng tính năng \u0026 tích hợp",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-09-30",
+        "dep":  "B2.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B2.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Nghiệm thu, chuyển giao \u0026 vận hành chính thức",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-07-01",
+        "end":  "2026-12-31",
+        "dep":  "B2.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B3",
+        "pillar":  "B. Hiện đại hóa quản trị doanh nghiệp",
+        "task":  "Hệ thống bảo trì bảo dưỡng thiết bị \u0026 quản lý tài sản",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Ban PT Khai thác / Phòng Bảo trì - Bảo dưỡng",
+        "coord":  "Ban Thăm dò",
+        "start":  "2027-01-01",
+        "end":  "2028-12-31",
+        "dep":  "",
+        "prio":  "Cao",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Quản lý tài sản, kế hoạch bảo trì bảo dưỡng (CMMS/EAM) cho thiết bị mỏ.",
+        "issue":  ""
+    },
+    {
+        "id":  "B3.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Chuẩn bị, lập kế hoạch \u0026 đấu thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-01-01",
+        "end":  "2027-09-30",
+        "dep":  "",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B3.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Triển khai, cấu hình \u0026 tích hợp hệ thống",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-10-01",
+        "end":  "2028-03-31",
+        "dep":  "B3.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B3.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Kiểm thử, đào tạo, nghiệm thu \u0026 vận hành",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2028-04-01",
+        "end":  "2028-12-31",
+        "dep":  "B3.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B4",
+        "pillar":  "B. Hiện đại hóa quản trị doanh nghiệp",
+        "task":  "Hệ thống quản trị nhân sự (HRM)",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Ban Quản trị Nguồn nhân lực",
+        "coord":  "Phòng CNTT \u0026 CĐS",
+        "start":  "2026-01-01",
+        "end":  "2026-12-31",
+        "dep":  "",
+        "prio":  "Cao",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Số hóa quản trị nhân sự: hồ sơ, chấm công, lương, đào tạo, đánh giá.",
+        "issue":  ""
+    },
+    {
+        "id":  "B4.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Khảo sát hiện trạng \u0026 xác định yêu cầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-03-31",
+        "dep":  "",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Cần cập nhật",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B4.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập đề cương/FS \u0026 phê duyệt chủ trương đầu tư",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-06-30",
+        "dep":  "B4.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B4.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập dự toán, HSMT \u0026 tổ chức đấu thầu, lựa chọn nhà thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-06-30",
+        "dep":  "B4.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B4.4",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Thiết kế giải pháp \u0026 triển khai/cấu hình hệ thống",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-07-01",
+        "end":  "2026-09-30",
+        "dep":  "B4.3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B4.5",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Tích hợp, di trú dữ liệu \u0026 kiểm thử (SIT/UAT)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-10-01",
+        "end":  "2026-12-31",
+        "dep":  "B4.4",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B4.6",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Đào tạo, nghiệm thu \u0026 đưa vào vận hành (Go-live)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-10-01",
+        "end":  "2026-12-31",
+        "dep":  "B4.5",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B5",
+        "pillar":  "B. Hiện đại hóa quản trị doanh nghiệp",
+        "task":  "Hệ thống quản lý đấu thầu",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Ban Pháp chế \u0026 Quản lý đấu thầu",
+        "coord":  "Ban KH \u0026 QLDA / CL \u0026 QTRR",
+        "start":  "2026-01-01",
+        "end":  "2027-12-31",
+        "dep":  "",
+        "prio":  "Cao",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Số hóa quy trình đấu thầu, minh bạch hóa \u0026 kiểm soát tuân thủ.",
+        "issue":  ""
+    },
+    {
+        "id":  "B5.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Khảo sát quy trình \u0026 xác định yêu cầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-06-30",
+        "dep":  "",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B5.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập FS, HSMT \u0026 lựa chọn nhà thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-12-31",
+        "dep":  "B5.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B5.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Thiết kế, triển khai \u0026 cấu hình hệ thống",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-01-01",
+        "end":  "2027-06-30",
+        "dep":  "B5.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B5.4",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Tích hợp, kiểm thử (UAT)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-07-01",
+        "end":  "2027-09-30",
+        "dep":  "B5.3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "B5.5",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Đào tạo, nghiệm thu \u0026 Go-live",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-10-01",
+        "end":  "2027-12-31",
+        "dep":  "B5.4",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C1",
+        "pillar":  "C. Nâng cao năng lực hỗ trợ vận hành",
+        "task":  "Hệ thống báo cáo quản trị (BI/Dashboard)",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Văn phòng / Phòng CNTT \u0026 CĐS",
+        "coord":  "Ban KH \u0026 QLDA / Ban KT - Kế toán",
+        "start":  "2026-01-01",
+        "end":  "2026-12-31",
+        "dep":  "",
+        "prio":  "Trung bình",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Báo cáo quản trị trực quan, cảnh báo sớm; khai thác dữ liệu từ ERP \u0026 nền tảng dữ liệu.",
+        "issue":  ""
+    },
+    {
+        "id":  "C1.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Khảo sát hiện trạng \u0026 xác định yêu cầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-03-31",
+        "dep":  "B1, D2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Cần cập nhật",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C1.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập đề cương/FS \u0026 phê duyệt chủ trương đầu tư",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-06-30",
+        "dep":  "C1.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C1.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập dự toán, HSMT \u0026 tổ chức đấu thầu, lựa chọn nhà thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-06-30",
+        "dep":  "C1.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C1.4",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Thiết kế giải pháp \u0026 triển khai/cấu hình hệ thống",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-07-01",
+        "end":  "2026-09-30",
+        "dep":  "C1.3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C1.5",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Tích hợp, di trú dữ liệu \u0026 kiểm thử (SIT/UAT)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-10-01",
+        "end":  "2026-12-31",
+        "dep":  "C1.4",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C1.6",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Đào tạo, nghiệm thu \u0026 đưa vào vận hành (Go-live)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-10-01",
+        "end":  "2026-12-31",
+        "dep":  "C1.5",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C2",
+        "pillar":  "C. Nâng cao năng lực hỗ trợ vận hành",
+        "task":  "Hệ thống quản trị tài liệu \u0026 tri thức doanh nghiệp (DMS/KM)",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Văn phòng / Phòng CNTT \u0026 CĐS",
+        "coord":  "Các Ban nghiệp vụ",
+        "start":  "2027-01-01",
+        "end":  "2027-12-31",
+        "dep":  "",
+        "prio":  "Trung bình",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Quản lý tài liệu tập trung, chuẩn hóa lưu trữ \u0026 chia sẻ tri thức.",
+        "issue":  ""
+    },
+    {
+        "id":  "C2.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Chuẩn bị, lập kế hoạch \u0026 đấu thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-01-01",
+        "end":  "2027-03-31",
+        "dep":  "D2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C2.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Triển khai, cấu hình \u0026 tích hợp hệ thống",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-04-01",
+        "end":  "2027-09-30",
+        "dep":  "C2.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C2.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Kiểm thử, đào tạo, nghiệm thu \u0026 vận hành",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-10-01",
+        "end":  "2027-12-31",
+        "dep":  "C2.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C3",
+        "pillar":  "C. Nâng cao năng lực hỗ trợ vận hành",
+        "task":  "Nền tảng tự động hóa trích xuất \u0026 số hóa văn bản (OCR/RPA)",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Văn phòng / Phòng CNTT \u0026 CĐS",
+        "coord":  "Các Ban nghiệp vụ",
+        "start":  "2026-01-01",
+        "end":  "2026-12-31",
+        "dep":  "",
+        "prio":  "Trung bình",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Tự động trích xuất, số hóa văn bản giấy phục vụ luồng xử lý điện tử.",
+        "issue":  ""
+    },
+    {
+        "id":  "C3.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Khảo sát hiện trạng \u0026 xác định yêu cầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-03-31",
+        "dep":  "",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Cần cập nhật",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C3.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập đề cương/FS \u0026 phê duyệt chủ trương đầu tư",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-06-30",
+        "dep":  "C3.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C3.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập dự toán, HSMT \u0026 tổ chức đấu thầu, lựa chọn nhà thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-06-30",
+        "dep":  "C3.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C3.4",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Thiết kế giải pháp \u0026 triển khai/cấu hình hệ thống",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-07-01",
+        "end":  "2026-09-30",
+        "dep":  "C3.3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C3.5",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Tích hợp, di trú dữ liệu \u0026 kiểm thử (SIT/UAT)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-10-01",
+        "end":  "2026-12-31",
+        "dep":  "C3.4",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C3.6",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Đào tạo, nghiệm thu \u0026 đưa vào vận hành (Go-live)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-10-01",
+        "end":  "2026-12-31",
+        "dep":  "C3.5",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C4",
+        "pillar":  "C. Nâng cao năng lực hỗ trợ vận hành",
+        "task":  "Phần mềm quản trị hệ thống kiểm soát \u0026 kiểm toán nội bộ",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Ban Kiểm soát nội bộ",
+        "coord":  "Phòng CNTT \u0026 CĐS",
+        "start":  "2026-01-01",
+        "end":  "2026-12-31",
+        "dep":  "",
+        "prio":  "Trung bình",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Số hóa quản trị KSNB/KTNB: kế hoạch kiểm toán, phát hiện, theo dõi khắc phục, ma trận rủi ro - kiểm soát.",
+        "issue":  ""
+    },
+    {
+        "id":  "C4.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Khảo sát hiện trạng \u0026 xác định yêu cầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-03-31",
+        "dep":  "",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Cần cập nhật",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C4.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập đề cương/FS \u0026 phê duyệt chủ trương đầu tư",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-06-30",
+        "dep":  "C4.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C4.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập dự toán, HSMT \u0026 tổ chức đấu thầu, lựa chọn nhà thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-06-30",
+        "dep":  "C4.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C4.4",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Thiết kế giải pháp \u0026 triển khai/cấu hình hệ thống",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-07-01",
+        "end":  "2026-09-30",
+        "dep":  "C4.3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C4.5",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Tích hợp, di trú dữ liệu \u0026 kiểm thử (SIT/UAT)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-10-01",
+        "end":  "2026-12-31",
+        "dep":  "C4.4",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "C4.6",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Đào tạo, nghiệm thu \u0026 đưa vào vận hành (Go-live)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-10-01",
+        "end":  "2026-12-31",
+        "dep":  "C4.5",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D1",
+        "pillar":  "D. Nền tảng \u0026 hạ tầng CNTT vững mạnh (đòn bẩy)",
+        "task":  "Xây dựng kiến trúc doanh nghiệp tổng thể (EA)",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Tổ triển khai Kiến trúc doanh nghiệp",
+        "coord":  "Phòng CNTT \u0026 CĐS / các Ban",
+        "start":  "2026-01-01",
+        "end":  "2026-12-31",
+        "dep":  "",
+        "prio":  "Rất cao",
+        "budget":  10500,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Khung EA (nghiệp vụ - dữ liệu - ứng dụng - công nghệ); định hướng \u0026 ràng buộc cho mọi sáng kiến số.",
+        "issue":  ""
+    },
+    {
+        "id":  "D1.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Khảo sát hiện trạng \u0026 thu thập yêu cầu kiến trúc",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-03-31",
+        "dep":  "",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Cần cập nhật",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D1.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Xây dựng khung EA \u0026 phê duyệt chủ trương",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-06-30",
+        "dep":  "D1.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D1.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập HSMT \u0026 lựa chọn đơn vị tư vấn EA",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-06-30",
+        "dep":  "D1.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D1.4",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Triển khai xây dựng kiến trúc EA chi tiết",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-07-01",
+        "end":  "2026-12-31",
+        "dep":  "D1.3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D1.5",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Ban hành \u0026 áp dụng kiến trúc EA",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-10-01",
+        "end":  "2026-12-31",
+        "dep":  "D1.4",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D2",
+        "pillar":  "D. Nền tảng \u0026 hạ tầng CNTT vững mạnh (đòn bẩy)",
+        "task":  "Nền tảng dữ liệu lớn Data Lakehouse",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Văn phòng / Phòng CNTT \u0026 CĐS",
+        "coord":  "CN TTKT / các Ban nghiệp vụ",
+        "start":  "2026-01-01",
+        "end":  "2027-06-30",
+        "dep":  "",
+        "prio":  "Rất cao",
+        "budget":  7658,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Nền tảng dữ liệu lớn tập trung; hạ tầng dữ liệu cho BI, AI/ML, ERP.",
+        "issue":  ""
+    },
+    {
+        "id":  "D2.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Khảo sát nguồn dữ liệu \u0026 xác định yêu cầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-03-31",
+        "dep":  "D1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Cần cập nhật",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D2.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Thiết kế kiến trúc nền tảng, phê duyệt \u0026 đấu thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-06-30",
+        "dep":  "D2.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D2.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Xây dựng nền tảng Data Lakehouse",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-07-01",
+        "end":  "2026-12-31",
+        "dep":  "D2.2",
+        "prio":  "",
+        "budget":  7658,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D2.4",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Thu thập \u0026 nạp dữ liệu (data ingestion)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-10-01",
+        "end":  "2027-06-30",
+        "dep":  "D2.3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D3",
+        "pillar":  "D. Nền tảng \u0026 hạ tầng CNTT vững mạnh (đòn bẩy)",
+        "task":  "Chuẩn hóa hạ tầng công nghệ định hướng Hybrid Cloud",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Văn phòng / Phòng CNTT \u0026 CĐS",
+        "coord":  "Đối tác hạ tầng",
+        "start":  "2026-01-01",
+        "end":  "2027-03-31",
+        "dep":  "",
+        "prio":  "Rất cao",
+        "budget":  40535,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Chuẩn hóa backup 3-2-1 \u0026 xây dựng Private Cloud GĐ1 tại HN; nền hạ tầng cho toàn bộ hệ thống.",
+        "issue":  ""
+    },
+    {
+        "id":  "D3.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Chuẩn hóa hệ thống backup theo quy tắc 3-2-1 — Chuẩn bị",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-06-30",
+        "dep":  "",
+        "prio":  "",
+        "budget":  16710,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D3.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Triển khai backup 3-2-1 (Air-gap/Cyber Recovery)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-07-01",
+        "end":  "2026-12-31",
+        "dep":  "D3.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D3.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Triển khai Private Cloud GĐ1 tại HN — Chuẩn bị",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-06-30",
+        "dep":  "",
+        "prio":  "",
+        "budget":  23825,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D3.4",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Triển khai \u0026 nghiệm thu Private Cloud GĐ1",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-07-01",
+        "end":  "2027-03-31",
+        "dep":  "D3.3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D4",
+        "pillar":  "D. Nền tảng \u0026 hạ tầng CNTT vững mạnh (đòn bẩy)",
+        "task":  "Nâng cao hiệu quả An toàn thông tin \u0026 Bảo mật",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Văn phòng / Phòng CNTT \u0026 CĐS",
+        "coord":  "Ban QTNNL (đào tạo) / đối tác ATTT",
+        "start":  "2026-01-01",
+        "end":  "2027-06-30",
+        "dep":  "",
+        "prio":  "Rất cao",
+        "budget":  25564,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Gồm 6 hạng mục: đánh giá ATTT theo cấp độ, SOAR, DLP, NAC, đào tạo nhận thức, SOC/NOC.",
+        "issue":  ""
+    },
+    {
+        "id":  "D4.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Đánh giá ATTT theo cấp độ (CB Q1–Q2, TK Q3)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-09-30",
+        "dep":  "",
+        "prio":  "",
+        "budget":  1050,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D4.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Triển khai hệ thống SOAR (CB Q1–Q2, TK Q3–Q4)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-12-31",
+        "dep":  "",
+        "prio":  "",
+        "budget":  13878,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D4.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Triển khai giải pháp DLP (CB Q1–Q2, TK Q3–Q4)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-12-31",
+        "dep":  "",
+        "prio":  "",
+        "budget":  3407,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D4.4",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Triển khai giải pháp NAC (CB Q1–Q2, TK Q3–Q4)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-12-31",
+        "dep":  "",
+        "prio":  "",
+        "budget":  5229,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D4.5",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Đào tạo nâng cao nhận thức ATTT \u0026 Bảo mật (Q2 \u0026 Q4)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-12-31",
+        "dep":  "",
+        "prio":  "",
+        "budget":  2000,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D4.6",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Triển khai các thành phần SOC/NOC (CB Q3–Q4)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-07-01",
+        "end":  "2027-06-30",
+        "dep":  "D4.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D5",
+        "pillar":  "D. Nền tảng \u0026 hạ tầng CNTT vững mạnh (đòn bẩy)",
+        "task":  "Nền tảng tích hợp dữ liệu xuyên suốt (ESB)",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Văn phòng / Phòng CNTT \u0026 CĐS",
+        "coord":  "Các Ban nghiệp vụ",
+        "start":  "2028-01-01",
+        "end":  "2030-12-31",
+        "dep":  "",
+        "prio":  "Rất cao",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Trục tích hợp dữ liệu (ESB) liên thông toàn bộ hệ thống ứng dụng.",
+        "issue":  ""
+    },
+    {
+        "id":  "D5.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Triển khai nền tảng ESB",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2028-01-01",
+        "end":  "2029-06-30",
+        "dep":  "D2, D3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "D5.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Tích hợp với các hệ thống ứng dụng",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2029-07-01",
+        "end":  "2030-12-31",
+        "dep":  "D5.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E1",
+        "pillar":  "E. Con người số, văn hóa số (đòn bẩy)",
+        "task":  "Trợ lý thông tin nội bộ MyPVEP",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Văn phòng / Phòng CNTT \u0026 CĐS",
+        "coord":  "Các Ban nghiệp vụ",
+        "start":  "2026-01-01",
+        "end":  "2027-12-31",
+        "dep":  "",
+        "prio":  "Trung bình",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Cổng/trợ lý thông tin nội bộ tập trung cho CBCNV.",
+        "issue":  ""
+    },
+    {
+        "id":  "E1.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Khảo sát hiện trạng \u0026 xác định yêu cầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-03-31",
+        "dep":  "D2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Cần cập nhật",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E1.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập đề cương/FS \u0026 phê duyệt chủ trương đầu tư",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-09-30",
+        "dep":  "E1.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E1.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập dự toán, HSMT \u0026 tổ chức đấu thầu, lựa chọn nhà thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-10-01",
+        "end":  "2026-12-31",
+        "dep":  "E1.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E1.4",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Thiết kế giải pháp \u0026 triển khai/cấu hình hệ thống",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-01-01",
+        "end":  "2027-03-31",
+        "dep":  "E1.3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E1.5",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Tích hợp, di trú dữ liệu \u0026 kiểm thử (SIT/UAT)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-04-01",
+        "end":  "2027-09-30",
+        "dep":  "E1.4",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E1.6",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Đào tạo, nghiệm thu \u0026 đưa vào vận hành (Go-live)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2027-10-01",
+        "end":  "2027-12-31",
+        "dep":  "E1.5",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E2",
+        "pillar":  "E. Con người số, văn hóa số (đòn bẩy)",
+        "task":  "Công cụ học tập trực tuyến E-learning",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Ban Quản trị Nguồn nhân lực",
+        "coord":  "Phòng CNTT \u0026 CĐS",
+        "start":  "2026-01-01",
+        "end":  "2026-12-31",
+        "dep":  "",
+        "prio":  "Trung bình",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Nền tảng đào tạo trực tuyến phục vụ nâng cao năng lực số.",
+        "issue":  ""
+    },
+    {
+        "id":  "E2.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Khảo sát hiện trạng \u0026 xác định yêu cầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-03-31",
+        "dep":  "",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Cần cập nhật",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E2.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập đề cương/FS \u0026 phê duyệt chủ trương đầu tư",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-06-30",
+        "dep":  "E2.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E2.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập dự toán, HSMT \u0026 tổ chức đấu thầu, lựa chọn nhà thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-06-30",
+        "dep":  "E2.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E2.4",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Thiết kế giải pháp \u0026 triển khai/cấu hình hệ thống",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-07-01",
+        "end":  "2026-09-30",
+        "dep":  "E2.3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E2.5",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Tích hợp, di trú dữ liệu \u0026 kiểm thử (SIT/UAT)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-10-01",
+        "end":  "2026-12-31",
+        "dep":  "E2.4",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E2.6",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Đào tạo, nghiệm thu \u0026 đưa vào vận hành (Go-live)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-10-01",
+        "end":  "2026-12-31",
+        "dep":  "E2.5",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E3",
+        "pillar":  "E. Con người số, văn hóa số (đòn bẩy)",
+        "task":  "Hệ thống quản lý sáng kiến \u0026 đề tài KHCN",
+        "sub":  "★ NHIỆM VỤ (sáng kiến số)",
+        "pic":  "Ban Công nghệ \u0026 An toàn môi trường",
+        "coord":  "Phòng CNTT \u0026 CĐS",
+        "start":  "2026-01-01",
+        "end":  "2026-12-31",
+        "dep":  "",
+        "prio":  "Trung bình",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "Quản lý sáng kiến cải tiến \u0026 đề tài khoa học công nghệ.",
+        "issue":  ""
+    },
+    {
+        "id":  "E3.1",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Khảo sát hiện trạng \u0026 xác định yêu cầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-01-01",
+        "end":  "2026-03-31",
+        "dep":  "",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Cần cập nhật",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E3.2",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập đề cương/FS \u0026 phê duyệt chủ trương đầu tư",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-06-30",
+        "dep":  "E3.1",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E3.3",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Lập dự toán, HSMT \u0026 tổ chức đấu thầu, lựa chọn nhà thầu",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-04-01",
+        "end":  "2026-06-30",
+        "dep":  "E3.2",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Đang thực hiện",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E3.4",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Thiết kế giải pháp \u0026 triển khai/cấu hình hệ thống",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-07-01",
+        "end":  "2026-09-30",
+        "dep":  "E3.3",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E3.5",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Tích hợp, di trú dữ liệu \u0026 kiểm thử (SIT/UAT)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-10-01",
+        "end":  "2026-12-31",
+        "dep":  "E3.4",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    },
+    {
+        "id":  "E3.6",
+        "pillar":  "",
+        "task":  "",
+        "sub":  "Đào tạo, nghiệm thu \u0026 đưa vào vận hành (Go-live)",
+        "pic":  "",
+        "coord":  "",
+        "start":  "2026-10-01",
+        "end":  "2026-12-31",
+        "dep":  "E3.5",
+        "prio":  "",
+        "budget":  0,
+        "pct":  0,
+        "status":  "Chưa bắt đầu",
+        "note":  "",
+        "issue":  ""
+    }
+]
+;
+const T0=new Date('2026-01-01'), T1=new Date('2030-12-31');
+const PCOL={A:'#1565c0',B:'#0d9488',C:'#7c3aed',D:'#b45309',E:'#be185d'};
+const PNAME={A:'A. Tối ưu CN số E&P',B:'B. Quản trị DN',C:'C. Hỗ trợ vận hành',D:'D. Nền tảng & hạ tầng',E:'E. Con người số'};
+const STCOL={'Hoàn thành':'#16a34a','Đang thực hiện':'#2563eb','Chưa bắt đầu':'#94a3b8','Cần cập nhật':'#f59e0b'};
+const day=864e5;
+function d(s){return s?new Date(s):null}
+function fmt(dt){if(!dt)return'–';return dt.getDate().toString().padStart(2,'0')+'/'+(dt.getMonth()+1).toString().padStart(2,'0')+'/'+dt.getFullYear()}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function pos(dt){return clamp((dt-T0)/(T1-T0)*100,0,100)}
+
+// edits persistence
+let EDITS={};
+try{EDITS=JSON.parse(localStorage.getItem('pvep_cds_edits')||'{}')}catch(e){EDITS={}}
+function saveEdits(){localStorage.setItem('pvep_cds_edits',JSON.stringify(EDITS))}
+function getPct(r){return EDITS[r.id]&&EDITS[r.id].pct!=null?EDITS[r.id].pct:r.pct}
+function getSt(r){return EDITS[r.id]&&EDITS[r.id].status?EDITS[r.id].status:r.status}
+
+// model
+RAW.forEach(r=>{r.code=r.id; r.pcode=r.id.split('.')[0]; r.pillarKey=r.id[0]; r.isParent=!r.id.includes('.'); r.s=d(r.start); r.e=d(r.end); r.dur=Math.max(1,(r.e-r.s)/day)});
+const PARENTS=RAW.filter(r=>r.isParent);
+const CHILD=RAW.filter(r=>!r.isParent);
+// carry parent info
+const byCode={}; RAW.forEach(r=>byCode[r.id]=r);
+CHILD.forEach(r=>{const p=byCode[r.pcode]; if(p){r.parent=p; r.pic=r.pic||p.pic; r.pillar=p.pillar}});
+
+let ASOF=new Date(document.getElementById('asof').value);
+function expectedPct(r){if(ASOF<=r.s)return 0;if(ASOF>=r.e)return 100;return Math.round((ASOF-r.s)/(r.e-r.s)*100)}
+function rag(r){const p=getPct(r),ex=expectedPct(r),st=getSt(r);
+  if(p>=100)return'green';
+  if(st==='Cần cập nhật')return'amber';
+  if(ex-p>25)return'red';
+  if(ex-p>0)return'amber';
+  return'green'}
+const RAGCOL={red:'#dc2626',amber:'#f59e0b',green:'#16a34a'};
+const RAGTXT={red:'Chậm nhiều',amber:'Cần chú ý',green:'Đúng tiến độ'};
+
+// ---- Critical Path (CPM on leaf tasks) ----
+function lastChildEnd(pcode){const cs=CHILD.filter(c=>c.pcode===pcode);if(!cs.length)return byCode[pcode];return cs.reduce((a,b)=>b.e>a.e?b:a)}
+function preds(r){if(!r.dep)return[];return r.dep.split(/[,;]/).map(s=>s.trim()).filter(Boolean).map(tok=>{
+  if(byCode[tok]&&!byCode[tok].isParent)return byCode[tok];
+  if(byCode[tok]&&byCode[tok].isParent)return lastChildEnd(tok);
+  return null}).filter(Boolean)}
+function computeCP(){
+  const nodes=CHILD.slice();
+  nodes.forEach(n=>{n.EF=0;n.pre=preds(n)});
+  // forward pass (longest dependency chain, iterate to fixpoint)
+  for(let it=0;it<nodes.length+2;it++){nodes.forEach(n=>{let es=0;n.pre.forEach(p=>{if(p.EF>es)es=p.EF});n.ES=es;n.EF=es+n.dur})}
+  // terminal node = end of longest chain, then backtrack via longest predecessor → single critical path
+  let term=nodes.reduce((a,b)=>b.EF>a.EF?b:a);
+  const chain=[];let cur=term,guard=0;
+  while(cur&&guard++<nodes.length+2){chain.unshift(cur);if(!cur.pre.length)break;cur=cur.pre.reduce((a,b)=>b.EF>a.EF?b:a)}
+  return chain}
+const CP=computeCP();
+const CRIT=new Set(CP.map(n=>n.id));
+
+// ===== RENDER =====
+const tip=document.getElementById('tip');
+function showTip(html,x,y){tip.innerHTML=html;tip.style.opacity=1;tip.style.left=Math.min(x+12,innerWidth-300)+'px';tip.style.top=(y+14)+'px'}
+function hideTip(){tip.style.opacity=0}
+
+function renderKPI(){
+  const tot=CHILD.length;
+  const done=CHILD.filter(r=>getPct(r)>=100).length;
+  const doing=CHILD.filter(r=>getSt(r)==='Đang thực hiện').length;
+  const need=CHILD.filter(r=>getSt(r)==='Cần cập nhật').length;
+  const behind=CHILD.filter(r=>rag(r)==='red').length;
+  const budget=PARENTS.reduce((s,r)=>s+(r.budget||0),0);
+  const actPct=Math.round(CHILD.reduce((s,r)=>s+getPct(r),0)/tot);
+  const planPct=Math.round(CHILD.reduce((s,r)=>s+expectedPct(r),0)/tot);
+  const cards=[
+    ['b1',PARENTS.length,'Sáng kiến số (nhiệm vụ)'],
+    ['b6',tot,'Tổng công việc con'],
+    ['b2',planPct+'%','Tiến độ <u>kế hoạch</u> đến nay'],
+    ['b5',actPct+'%','Tiến độ <u>thực tế</u>'],
+    ['b4',behind,'Công việc chậm tiến độ'],
+    ['b3',(budget/1000).toLocaleString('vi-VN',{maximumFractionDigits:1})+' tỷ','Khái toán CNTT 2026'],
+  ];
+  document.getElementById('kpis').innerHTML=cards.map(c=>`<div class="kpi ${c[0]}"><div class="bar"></div><div class="v">${c[1]}</div><div class="l">${c[2]}</div></div>`).join('');
+}
+
+function renderScurve(){
+  const W=560,H=210,pl=38,pr=12,pt=12,pb=26,iw=W-pl-pr,ih=H-pt-pb;
+  // quarterly planned cumulative
+  const pts=[];for(let y=2026;y<=2030;y++)for(let q=1;q<=4;q++){const qe=new Date(y,q*3,0);pts.push(qe)}
+  const planSeries=pts.map(qe=>{let s=0;CHILD.forEach(r=>{if(qe<=r.s)s+=0;else if(qe>=r.e)s+=100;else s+=(qe-r.s)/(r.e-r.s)*100});return s/CHILD.length});
+  const actNow=CHILD.reduce((s,r)=>s+getPct(r),0)/CHILD.length;
+  const x=i=>pl+iw*i/(pts.length-1);
+  const yv=v=>pt+ih*(1-v/100);
+  let g='';
+  for(let v=0;v<=100;v+=25){g+=`<line x1="${pl}" y1="${yv(v)}" x2="${W-pr}" y2="${yv(v)}" stroke="#eef2f7"/><text x="${pl-6}" y="${yv(v)+3}" font-size="9" fill="#94a3b8" text-anchor="end">${v}%</text>`}
+  pts.forEach((p,i)=>{if(i%4===0)g+=`<text x="${x(i)}" y="${H-8}" font-size="9" fill="#94a3b8" text-anchor="middle">${p.getFullYear()}</text>`});
+  const path=planSeries.map((v,i)=>(i?'L':'M')+x(i)+' '+yv(v)).join(' ');
+  const area=`M${x(0)} ${yv(0)} `+planSeries.map((v,i)=>'L'+x(i)+' '+yv(v)).join(' ')+` L${x(pts.length-1)} ${yv(0)} Z`;
+  // today
+  const tnow=clamp((ASOF-T0)/(T1-T0),0,1);const tx=pl+iw*tnow;
+  g+=`<path d="${area}" fill="#1565c0" opacity=".08"/>`;
+  g+=`<path d="${path}" fill="none" stroke="#1565c0" stroke-width="2.5"/>`;
+  g+=`<line x1="${tx}" y1="${pt}" x2="${tx}" y2="${pt+ih}" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+  // planned at today
+  const pNow=clamp((ASOF-T0)/(T1-T0),0,1);
+  let plToday=0;CHILD.forEach(r=>{if(ASOF<=r.s)plToday+=0;else if(ASOF>=r.e)plToday+=100;else plToday+=(ASOF-r.s)/(r.e-r.s)*100});plToday/=CHILD.length;
+  g+=`<circle cx="${tx}" cy="${yv(plToday)}" r="4.5" fill="#1565c0"/>`;
+  g+=`<circle cx="${tx}" cy="${yv(actNow)}" r="5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/>`;
+  g+=`<text x="${tx+7}" y="${yv(plToday)-6}" font-size="9.5" fill="#1565c0" font-weight="700">KH ${Math.round(plToday)}%</text>`;
+  g+=`<text x="${tx+7}" y="${yv(actNow)+14}" font-size="9.5" fill="#16a34a" font-weight="700">TT ${Math.round(actNow)}%</text>`;
+  document.getElementById('scurve').innerHTML=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">${g}</svg>`;
+}
+
+function renderDonut(){
+  const counts={};CHILD.forEach(r=>{const s=getSt(r);counts[s]=(counts[s]||0)+1});
+  const order=['Đang thực hiện','Chưa bắt đầu','Cần cập nhật','Hoàn thành'].filter(s=>counts[s]);
+  const tot=CHILD.length;let a=-Math.PI/2;const R=70,r=44,cx=85,cy=85;let seg='';
+  order.forEach(s=>{const frac=counts[s]/tot;const a2=a+frac*2*Math.PI;
+    const x1=cx+R*Math.cos(a),y1=cy+R*Math.sin(a),x2=cx+R*Math.cos(a2),y2=cy+R*Math.sin(a2);
+    const xi2=cx+r*Math.cos(a2),yi2=cy+r*Math.sin(a2),xi1=cx+r*Math.cos(a);yi1=cy+r*Math.sin(a);
+    const large=frac>.5?1:0;
+    seg+=`<path d="M${x1} ${y1} A${R} ${R} 0 ${large} 1 ${x2} ${y2} L${xi2} ${yi2} A${r} ${r} 0 ${large} 0 ${xi1} ${yi1} Z" fill="${STCOL[s]}"/>`;
+    a=a2});
+  const leg=order.map(s=>`<div style="display:flex;align-items:center;gap:7px;margin-bottom:7px;font-size:12.5px"><i style="width:11px;height:11px;border-radius:3px;background:${STCOL[s]};display:inline-block"></i><span style="flex:1">${s}</span><b>${counts[s]}</b></div>`).join('');
+  document.getElementById('donut').innerHTML=`<svg viewBox="0 0 170 170" style="width:170px;height:170px">${seg}<text x="85" y="80" text-anchor="middle" font-size="26" font-weight="800" fill="#0b2c5c">${tot}</text><text x="85" y="98" text-anchor="middle" font-size="10" fill="#64748b">công việc</text></svg><div style="min-width:170px">${leg}</div>`;
+}
+
+function renderPillars(){
+  let h='';['A','B','C','D','E'].forEach(k=>{
+    const cs=CHILD.filter(r=>r.pillarKey===k);if(!cs.length)return;
+    const plan=Math.round(cs.reduce((s,r)=>s+expectedPct(r),0)/cs.length);
+    const act=Math.round(cs.reduce((s,r)=>s+getPct(r),0)/cs.length);
+    const ninit=PARENTS.filter(r=>r.pillarKey===k).length;
+    h+=`<div class="pbar"><div class="row"><b>${PNAME[k]}</b><span style="color:var(--muted)">${ninit} sáng kiến · ${cs.length} CV · KH ${plan}% / TT ${act}%</span></div>
+      <div class="track"><div class="plan" style="width:${plan}%;background:${PCOL[k]}"></div><div class="act" style="width:${act}%;background:${PCOL[k]}"></div></div></div>`});
+  document.getElementById('pillars').innerHTML=h;
+}
+
+function renderSwim(){
+  const years=[2026,2027,2028,2029,2030];
+  let head=`<div class="swimhead"><div style="padding:10px;font-size:11px;font-weight:700;color:#64748b">TRỤ CỘT</div><div class="yr">${years.map(y=>`<span>${y}</span>`).join('')}</div></div>`;
+  let rows='';
+  ['A','B','C','D','E'].forEach(k=>{
+    const inits=PARENTS.filter(r=>r.pillarKey===k);
+    const lanes=[];// simple stacking to avoid overlap
+    inits.forEach(it=>{let placed=false;for(const lane of lanes){if(lane[lane.length-1].e<=it.s){lane.push(it);placed=true;break}}if(!placed)lanes.push([it])});
+    const laneH=30;const trackH=Math.max(64,lanes.length*laneH+12);
+    let bars='';
+    lanes.forEach((lane,li)=>lane.forEach(it=>{
+      const l=pos(it.s),w=Math.max(2,pos(it.e)-pos(it.s));const top=8+li*laneH;
+      const act=getPct(it);
+      bars+=`<div class="swimbar" style="left:${l}%;width:${w}%;top:${top}px;background:${PCOL[k]}" data-id="${it.id}" title="">${it.task}</div>`;
+      bars+=`<div style="position:absolute;left:calc(${pos(it.e)}% - 6px);top:${top+3}px;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:11px solid ${PCOL[k]}"></div>`;
+    }));
+    const grid=years.map(()=>`<span></span>`).join('');
+    rows+=`<div class="swimrow"><div class="swimlbl" style="background:${PCOL[k]}">${PNAME[k]}</div><div class="swimtrack" style="height:${trackH}px"><div class="swimgrid">${grid}</div>${bars}</div></div>`;
+  });
+  document.getElementById('swim').innerHTML=head+rows;
+  document.querySelectorAll('.swimbar').forEach(b=>{
+    const it=byCode[b.dataset.id];
+    b.onmousemove=e=>showTip(`<b>${it.id}</b> · ${it.task}<br>Chủ trì: ${it.pic}<br>${fmt(it.s)} → ${fmt(it.e)} · Ưu tiên: ${it.prio}<br>Trạng thái: ${getSt(it)}`,e.clientX,e.clientY);
+    b.onmouseleave=hideTip;
+  });
+}
+
+function phaseColor(r){
+  const s=(r.sub||'').toLowerCase();
+  if(/(go-live|nghiệm thu|vận hành|đào tạo)/.test(s))return'#16a34a';
+  if(/(khảo sát|fs|đề cương|hsmt|đấu thầu|chủ trương|chuẩn bị|yêu cầu|quy trình)/.test(s))return'#1565c0';
+  return'#0d9488';
+}
+function renderGantt(){
+  const filter=document.getElementById('gfilter').value;
+  const onlyCrit=document.getElementById('gcrit').checked;
+  const years=[2026,2027,2028,2029,2030];
+  let head=`<div class="grow ghead"><div class="glabel">CÔNG VIỆC (${CHILD.length} CV con)</div><div class="gtrack"><div class="qgrid">`;
+  years.forEach(y=>{for(let q=1;q<=4;q++)head+=`<div class="qcell ${q===4?'yr':''}">${q===1?y:'Q'+q}</div>`});
+  head+=`</div></div></div>`;
+  let body='';
+  PARENTS.forEach(p=>{
+    if(filter!=='all'&&p.pillarKey!==filter)return;
+    const kids=CHILD.filter(c=>c.pcode===p.id);
+    if(onlyCrit&&!kids.some(k=>CRIT.has(k.id)))return;
+    // parent bar
+    const pl=pos(p.s),pw=Math.max(1,pos(p.e)-pos(p.s));
+    body+=`<div class="grow pinit"><div class="glabel" title="${p.task}"><b>${p.id}</b> · ${p.task}</div><div class="gtrack">${qgridHtml(years)}<div class="gbar initbar" style="left:${pl}%;width:${pw}%" data-id="${p.id}"></div><div class="gmile" style="left:${pos(p.e)}%"></div></div></div>`;
+    kids.forEach(k=>{
+      if(onlyCrit&&!CRIT.has(k.id))return;
+      const l=pos(k.s),w=Math.max(.6,pos(k.e)-pos(k.s));const col=phaseColor(k);const act=getPct(k);
+      body+=`<div class="grow"><div class="glabel sub" title="${k.sub}">${k.id} · ${k.sub}</div><div class="gtrack">${qgridHtml(years)}<div class="gbar ${CRIT.has(k.id)?'crit':''}" style="left:${l}%;width:${w}%;background:${col}" data-id="${k.id}"><div class="fill" style="width:${act}%"></div></div></div></div>`;
+    });
+  });
+  const tnow=clamp((ASOF-T0)/(T1-T0),0,1)*100;
+  document.getElementById('gantt-body').innerHTML=head+body+`<div class="todayline" style="left:calc(230px + (100% - 230px)*${tnow/100})"></div>`;
+  document.getElementById('gcount').textContent=CP.length+' công việc trên đường găng';
+  document.querySelectorAll('#gantt-body .gbar').forEach(b=>{const r=byCode[b.dataset.id];
+    b.onmousemove=e=>showTip(`<b>${r.id}</b> · ${r.isParent?r.task:r.sub}<br>${fmt(r.s)} → ${fmt(r.e)} (${Math.round(r.dur)} ngày)<br>Thực tế: ${getPct(r)}% · ${getSt(r)}${CRIT.has(r.id)?'<br>⚠️ Trên đường găng':''}`,e.clientX,e.clientY);
+    b.onmouseleave=hideTip});
+}
+function qgridHtml(years){let h='<div class="qgrid">';years.forEach(y=>{for(let q=1;q<=4;q++)h+=`<div class="qcell ${q===4?'yr':''}"></div>`});return h+'</div>'}
+
+let sortKey='id',sortDir=1;
+function renderTable(){
+  const q=document.getElementById('tsearch').value.toLowerCase();
+  const fp=document.getElementById('tpillar').value, fs=document.getElementById('tstatus').value, fr=document.getElementById('trag').value;
+  const cols=[['id','Mã'],['name','Nhiệm vụ / Công việc'],['pic','Chủ trì'],['s','Bắt đầu'],['e','Hạn'],['prio','Ưu tiên'],['plan','% KH'],['act','% TT'],['status','Trạng thái'],['flag','RAG']];
+  document.querySelector('#rag thead').innerHTML='<tr>'+cols.map(c=>`<th data-k="${c[0]}">${c[1]}</th>`).join('')+'</tr>';
+  let rows=RAW.filter(r=>{
+    if(fp!=='all'&&r.pillarKey!==fp)return false;
+    if(fs!=='all'&&getSt(r)!==fs)return false;
+    if(fr!=='all'&&rag(r)!==fr)return false;
+    const txt=(r.id+' '+(r.task||'')+' '+(r.sub||'')+' '+(r.pic||'')).toLowerCase();
+    return txt.includes(q)});
+  rows.sort((a,b)=>{let va,vb;
+    if(sortKey==='plan'){va=expectedPct(a);vb=expectedPct(b)}
+    else if(sortKey==='act'){va=getPct(a);vb=getPct(b)}
+    else if(sortKey==='name'){va=a.task||a.sub;vb=b.task||b.sub}
+    else if(sortKey==='s'||sortKey==='e'){va=a[sortKey];vb=b[sortKey]}
+    else{va=a[sortKey]||'';vb=b[sortKey]||''}
+    return va>vb?sortDir:va<vb?-sortDir:0});
+  const stOpts=['Chưa bắt đầu','Đang thực hiện','Hoàn thành','Cần cập nhật'];
+  document.querySelector('#rag tbody').innerHTML=rows.map(r=>{
+    const g=rag(r),plan=expectedPct(r),act=getPct(r);
+    const nm=r.isParent?`<b>${r.task}</b>`:r.sub;
+    return `<tr class="${r.isParent?'parent':''}">
+      <td>${r.id}</td>
+      <td style="max-width:300px">${nm}</td>
+      <td style="max-width:150px;color:var(--muted)">${r.pic||''}</td>
+      <td>${fmt(r.s)}</td><td>${fmt(r.e)}</td>
+      <td><span class="chip" style="background:${r.prio==='Rất cao'?'#dc2626':r.prio==='Cao'?'#ea580c':r.prio?'#0891b2':'#cbd5e1'}">${r.prio||'–'}</span></td>
+      <td><span class="mini"><i style="width:${plan}%;background:#94a3b8"></i></span>${plan}%</td>
+      <td><input class="editpct" type="number" min="0" max="100" value="${act}" data-id="${r.id}"></td>
+      <td><select class="editst" data-id="${r.id}">${stOpts.map(o=>`<option ${getSt(r)===o?'selected':''}>${o}</option>`).join('')}</select></td>
+      <td><span class="flag" style="background:${RAGCOL[g]}22;color:${RAGCOL[g]}">${g==='red'?'🔴':g==='amber'?'🟡':'🟢'} ${RAGTXT[g]}</span></td>
+    </tr>`}).join('');
+  document.querySelectorAll('#rag .editpct').forEach(inp=>inp.onchange=e=>{const id=e.target.dataset.id;EDITS[id]=EDITS[id]||{};EDITS[id].pct=clamp(+e.target.value||0,0,100);if(EDITS[id].pct>=100)EDITS[id].status='Hoàn thành';saveEdits();refreshAll()});
+  document.querySelectorAll('#rag .editst').forEach(sel=>sel.onchange=e=>{const id=e.target.dataset.id;EDITS[id]=EDITS[id]||{};EDITS[id].status=e.target.value;saveEdits();refreshAll()});
+  document.querySelectorAll('#rag thead th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(sortKey===k)sortDir*=-1;else{sortKey=k;sortDir=1}renderTable()});
+}
+
+function renderKSNB(){
+  // behind
+  const behind=CHILD.filter(r=>rag(r)==='red').sort((a,b)=>expectedPct(b)-expectedPct(a));
+  document.getElementById('behind').innerHTML=behind.length?behind.slice(0,14).map(r=>{
+    const ex=expectedPct(r);
+    return `<div class="alert red"><h4>${r.id} · ${r.sub} <span class="chip" style="background:${PCOL[r.pillarKey]}">${r.pillarKey}</span></h4>
+      <div style="font-size:12.5px;color:var(--muted)">Chủ trì: ${r.pic||'–'} · Hạn ${fmt(r.e)} · KH đến nay ~${ex}%, thực tế ${getPct(r)}%</div></div>`}).join('')
+    +(behind.length>14?`<p class="note">…và ${behind.length-14} công việc khác. Lọc đầy đủ ở tab Bảng theo dõi.</p>`:'')
+    :'<p style="color:var(--green);font-size:13px">✓ Không có công việc chậm tại ngày báo cáo.</p>';
+  // need update
+  const nu=CHILD.filter(r=>getSt(r)==='Cần cập nhật');
+  document.getElementById('needupdate').innerHTML=nu.length?`<p style="font-size:12.5px;color:var(--muted);margin-bottom:8px">${nu.length} công việc khởi điểm năm 2026 cần các Ban chủ trì xác nhận tình hình thực hiện:</p>`+nu.map(r=>`<div style="font-size:12.5px;padding:5px 0;border-bottom:1px solid var(--line)"><b>${r.id}</b> · ${r.sub} <span style="color:var(--muted)">— ${r.pic||(r.parent&&r.parent.pic)||''}</span></div>`).join(''):'<p style="color:var(--green)">✓ Tất cả đã cập nhật.</p>';
+  // CP list
+  document.getElementById('cplist').innerHTML=CP.map((r,i)=>`<div class="cpitem"><div class="num">${i+1}</div><div style="flex:1"><div style="font-weight:700;font-size:12.5px">${r.id} · ${r.sub}</div><div style="font-size:11.5px;color:var(--muted)">${r.parent?r.parent.task:''} · ${fmt(r.s)}→${fmt(r.e)}</div></div></div>`).join('')
+    +`<p class="note">Chuỗi công việc có tổng dự trữ (float) ≈ 0 — bất kỳ chậm trễ nào ở đây đều đẩy lùi đích hoàn thành toàn chương trình (31/12/2030). Cần ưu tiên giám sát.</p>`;
+  // risks
+  const byP=PARENTS.filter(r=>r.budget>0).sort((a,b)=>b.budget-a.budget);
+  const totB=byP.reduce((s,r)=>s+r.budget,0);
+  let h=`<p style="font-size:12.5px;color:var(--muted);margin-bottom:10px">Toàn bộ khái toán 2026 (~${(totB/1000).toFixed(1)} tỷ) tập trung ở trụ cột D (nền tảng &amp; hạ tầng) — đòn bẩy cho mọi sáng kiến nghiệp vụ:</p>`;
+  byP.forEach(r=>{h+=`<div class="pbar"><div class="row"><b>${r.id} · ${r.task}</b><span>${(r.budget/1000).toFixed(2)} tỷ (${Math.round(r.budget/totB*100)}%)</span></div><div class="track"><div class="act" style="width:${r.budget/byP[0].budget*100}%;background:var(--pD)"></div></div></div>`});
+  h+=`<div class="alert blue" style="margin-top:12px"><h4>Điểm kiểm soát trọng yếu</h4><ul>
+    <li><b>Phụ thuộc nền tảng:</b> EA (D1), Data Lakehouse (D2), Hạ tầng (D3) là tiền đề của ERP, BI, AI/ML — chậm D kéo theo chậm A/B/C.</li>
+    <li><b>Dồn tiến độ 2026:</b> phần lớn bước "Chuẩn bị/đấu thầu" rơi vào năm 2026; rủi ro nghẽn năng lực đấu thầu &amp; vốn.</li>
+    <li><b>Số liệu thực tế:</b> nhiều công việc chưa cập nhật % — đề nghị các Ban báo cáo định kỳ để dashboard phản ánh đúng.</li></ul></div>`;
+  document.getElementById('risks').innerHTML=h;
+}
+
+function refreshAll(){
+  ASOF=new Date(document.getElementById('asof').value);
+  renderKPI();renderScurve();renderDonut();renderPillars();renderSwim();renderGantt();renderTable();renderKSNB();
+}
+
+// nav
+document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav.tabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+  document.querySelectorAll('section.view').forEach(s=>s.classList.remove('active'));
+  document.getElementById(b.dataset.v).classList.add('active');
+});
+document.getElementById('asof').onchange=refreshAll;
+document.getElementById('gfilter').onchange=renderGantt;
+document.getElementById('gcrit').onchange=renderGantt;
+['tsearch','tpillar','tstatus','trag'].forEach(id=>document.getElementById(id).oninput=renderTable);
+document.getElementById('resetedits').onclick=()=>{if(confirm('Xoá toàn bộ số liệu % và trạng thái bạn đã nhập trên trình duyệt này?')){EDITS={};saveEdits();refreshAll()}};
+document.getElementById('exportcsv').onclick=()=>{
+  const head=['Ma CV','Loai','Tru cot','Nhiem vu/Cong viec','Chu tri','Bat dau','Han','Uu tien','Khai toan (trieu)','% KH den nay','% Thuc te','Trang thai','RAG'];
+  const lines=[head.join(',')];
+  RAW.forEach(r=>{const row=[r.id,r.isParent?'Nhiem vu':'Cong viec con',r.pillarKey,(r.isParent?r.task:r.sub),r.pic||'',fmt(r.s),fmt(r.e),r.prio||'',r.budget||'',expectedPct(r),getPct(r),getSt(r),RAGTXT[rag(r)]].map(v=>`"${String(v).replace(/"/g,'""')}"`);lines.push(row.join(','))});
+  const blob=new Blob(['﻿'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='TienDo_CDS_PVEP_'+document.getElementById('asof').value+'.csv';a.click();
+};
+refreshAll();
+</script>
+</body>
+</html>
