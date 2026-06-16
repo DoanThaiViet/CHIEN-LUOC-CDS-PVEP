@@ -17,14 +17,14 @@
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
   .wrap{max-width:1440px;margin:0 auto;padding:0 20px 60px}
-  header.top{background:linear-gradient(115deg,#00843d 0%,#006838 34%,#0a5a52 56%,#262d7a 100%);color:#fff;padding:22px 0 18px;position:relative;overflow:hidden;border-bottom:3px solid #00a651}
+  header.top{background:linear-gradient(115deg,#00843d 0%,#006838 34%,#0a5a52 56%,#262d7a 100%);color:#fff;padding:13px 0 12px;position:relative;overflow:hidden;border-bottom:3px solid #00a651}
   header.top::after{content:"";position:absolute;inset:0;background:radial-gradient(820px 320px at 82% -45%,rgba(46,49,146,.55),transparent 62%),radial-gradient(620px 260px at 8% 130%,rgba(0,166,81,.40),transparent 60%);pointer-events:none}
-  header.top .wrap{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
-  header.top .brand{display:flex;align-items:center;gap:16px}
+  header.top .wrap{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding-bottom:0}
+  header.top .brand{display:flex;align-items:center;gap:14px}
   header.top .logo{flex:none;display:flex;align-items:center}
-  header.top .logo img{height:56px;display:block}
-  header.top h1{font-size:21px;font-weight:700;letter-spacing:.2px}
-  header.top .sub{font-size:12.5px;color:#d7ecdc;margin-top:4px;max-width:760px}
+  header.top .logo img{height:40px;display:block}
+  header.top h1{font-size:17px;font-weight:700;letter-spacing:.2px;line-height:1.25}
+  header.top .sub{font-size:12px;color:#d7ecdc;margin-top:3px;max-width:720px}
   .asof{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:8px 12px;font-size:12.5px;display:flex;align-items:center;gap:8px}
   .asof input{border:none;border-radius:6px;padding:4px 6px;font-size:12.5px;font-family:inherit}
   .asof label{color:#d7ecdc}
@@ -135,6 +135,33 @@
   .tip{position:fixed;z-index:100;background:var(--navy);color:#fff;font-size:11.5px;padding:8px 11px;border-radius:8px;max-width:280px;box-shadow:var(--shadow-lg);pointer-events:none;opacity:0;transition:opacity .12s;line-height:1.45}
   .tip b{color:#9fc2f0}
   .pill-status{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px}
+  /* 3D donut */
+  #donut{padding:4px 0}
+  #donut svg{filter:drop-shadow(0 12px 18px rgba(20,40,60,.22))}
+  .donut-leg{min-width:172px}
+  .donut-leg .li{display:flex;align-items:center;gap:9px;margin-bottom:11px;font-size:13px}
+  .donut-leg .li i{width:13px;height:13px;border-radius:4px;display:inline-block;box-shadow:0 1px 2px rgba(0,0,0,.25);flex:none}
+  .donut-leg .li span{flex:1;color:var(--ink)}
+  .donut-leg .li b{font-size:15px;font-weight:800;color:var(--navy)}
+  .donut-leg .li small{color:var(--muted);font-size:11px;width:38px;text-align:right}
+  /* AI Q&A */
+  .aichat{display:flex;flex-direction:column;height:66vh;min-height:440px;padding:0;overflow:hidden}
+  .aimsg{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;background:linear-gradient(180deg,#f6faf8,#fff)}
+  .abub{max-width:82%;padding:11px 15px;border-radius:15px;font-size:13px;line-height:1.6;box-shadow:var(--shadow);word-wrap:break-word}
+  .abub.u{align-self:flex-end;background:linear-gradient(120deg,#006838,#2e3192);color:#fff;border-bottom-right-radius:4px}
+  .abub.a{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+  .abub.a b{color:var(--navy)}
+  .abub.a .r2{display:flex;justify-content:space-between;gap:12px;padding:4px 0;border-bottom:1px dashed var(--line)}
+  .abub.a .r2:last-child{border-bottom:none}
+  .abub.a .r2 b{color:var(--ink)}
+  .aiava{font-size:11px;font-weight:700;color:var(--teal);margin-bottom:5px;display:flex;align-items:center;gap:6px;letter-spacing:.3px}
+  .aiava .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 3px rgba(0,132,61,.15)}
+  .aichips{display:flex;gap:8px;flex-wrap:wrap;padding:11px 16px;border-top:1px solid var(--line);background:#fff}
+  .aichip{font-size:11.5px;padding:6px 13px;border-radius:20px;border:1px solid var(--line);background:var(--blue-l);color:var(--navy);cursor:pointer;font-weight:600;font-family:inherit;transition:.15s}
+  .aichip:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .aiinput{display:flex;gap:10px;padding:12px 16px;border-top:1px solid var(--line);background:#fff}
+  .aiinput input{flex:1;font-family:inherit;font-size:13px;padding:11px 16px;border:1px solid var(--line);border-radius:24px;background:#fff}
+  .aiinput input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-l)}
 </style>
 </head>
 <body>
@@ -143,8 +170,8 @@
     <div class="brand">
       <div class="logo"><img src="PVEP.png" alt="PETROVIETNAM PVEP"></div>
       <div>
-        <h1>BÁO CÁO TIẾN ĐỘ CHUYỂN ĐỔI SỐ PVEP · GIAI ĐOẠN 2026–2030</h1>
-        <div class="sub">Theo dõi thực hiện QĐ 2475/QĐ-TDKT (Kế hoạch tổng thể hệ thống CNTT) &amp; QĐ 2476/QĐ-TDKT (Lộ trình CĐS) · Dashboard quản trị dự án trình HĐTV</div>
+        <h1>BÁO CÁO TIẾN ĐỘ CHUYỂN ĐỔI SỐ PVEP · 2026–2030</h1>
+        <div class="sub">Theo dõi QĐ 2475 &amp; 2476/QĐ-TDKT · Dashboard quản trị trình HĐTV</div>
       </div>
     </div>
     <div class="asof">
@@ -160,6 +187,7 @@
     <button data-v="gantt">Gantt &amp; Đường găng</button>
     <button data-v="table">Bảng theo dõi (RAG)</button>
     <button data-v="ksnb">Cảnh báo &amp; Kiến nghị KSNB</button>
+    <button data-v="ai">🤖 Hỏi đáp AI</button>
   </div>
 </nav>
 <div class="wrap">
@@ -272,6 +300,20 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- AI Q&A -->
+  <section class="view" id="ai">
+    <h2 class="sec">Trợ lý AI — Hỏi đáp về tiến độ CĐS <span class="tag">phân tích dữ liệu dashboard</span></h2>
+    <div class="card aichat">
+      <div class="aimsg" id="aimsg"></div>
+      <div class="aichips" id="aichips"></div>
+      <div class="aiinput">
+        <input id="aiq" placeholder="Hỏi: tổng quan tiến độ? trụ cột A đến đâu? công việc nào đang chậm? đường găng? ngân sách? mã A1...">
+        <button class="btn primary" id="aisend">Gửi ➤</button>
+      </div>
+    </div>
+    <p class="note">Trợ lý phân tích trực tiếp dữ liệu trên dashboard (offline, không gửi ra ngoài), cập nhật theo ngày báo cáo &amp; số liệu bạn nhập ở tab Bảng theo dõi.</p>
   </section>
 
 </div>
@@ -2481,18 +2523,50 @@ function renderScurve(){
   document.getElementById('scurve').innerHTML=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">${g}</svg>`;
 }
 
+function shade(hex,p){// p<0 darken, p>0 lighten
+  const n=parseInt(hex.slice(1),16);let R=(n>>16)&255,G=(n>>8)&255,B=n&255;
+  const f=t=>Math.round(p<0?t*(1+p):t+(255-t)*p);
+  return '#'+[f(R),f(G),f(B)].map(v=>Math.max(0,Math.min(255,v)).toString(16).padStart(2,'0')).join('');
+}
 function renderDonut(){
   const counts={};CHILD.forEach(r=>{const s=getSt(r);counts[s]=(counts[s]||0)+1});
   const order=['Đang thực hiện','Chưa bắt đầu','Cần cập nhật','Hoàn thành'].filter(s=>counts[s]);
-  const tot=CHILD.length;let a=-Math.PI/2;const R=70,r=44,cx=85,cy=85;let seg='';
-  order.forEach(s=>{const frac=counts[s]/tot;const a2=a+frac*2*Math.PI;
-    const x1=cx+R*Math.cos(a),y1=cy+R*Math.sin(a),x2=cx+R*Math.cos(a2),y2=cy+R*Math.sin(a2);
-    const xi2=cx+r*Math.cos(a2),yi2=cy+r*Math.sin(a2),xi1=cx+r*Math.cos(a);yi1=cy+r*Math.sin(a);
-    const large=frac>.5?1:0;
-    seg+=`<path d="M${x1} ${y1} A${R} ${R} 0 ${large} 1 ${x2} ${y2} L${xi2} ${yi2} A${r} ${r} 0 ${large} 0 ${xi1} ${yi1} Z" fill="${STCOL[s]}"/>`;
-    a=a2});
-  const leg=order.map(s=>`<div style="display:flex;align-items:center;gap:7px;margin-bottom:7px;font-size:12.5px"><i style="width:11px;height:11px;border-radius:3px;background:${STCOL[s]};display:inline-block"></i><span style="flex:1">${s}</span><b>${counts[s]}</b></div>`).join('');
-  document.getElementById('donut').innerHTML=`<svg viewBox="0 0 170 170" style="width:170px;height:170px">${seg}<text x="85" y="80" text-anchor="middle" font-size="26" font-weight="800" fill="#0b2c5c">${tot}</text><text x="85" y="98" text-anchor="middle" font-size="10" fill="#64748b">công việc</text></svg><div style="min-width:170px">${leg}</div>`;
+  const tot=CHILD.length||1;
+  // 3D donut: ellipse projection (squashed) + extruded depth
+  const cx=118,cy=104,Rx=104,Ry=Rx*0.56,rRatio=0.56,depth=26;
+  const rx=Rx*rRatio,ry=Ry*rRatio;
+  const P=(R,Rr,ang,yo)=>[cx+R*Math.cos(ang),cy+Rr*Math.sin(ang)+(yo||0)];
+  const arcPts=(R,Rr,a1,a2,yo)=>{const n=Math.max(2,Math.ceil(Math.abs(a2-a1)/0.12));let p=[];for(let i=0;i<=n;i++){const ang=a1+(a2-a1)*i/n;p.push(P(R,Rr,ang,yo))}return p};
+  // build segments
+  let a=-Math.PI/2;const segs=[];
+  order.forEach(s=>{const a2=a+counts[s]/tot*2*Math.PI;segs.push({s,a1:a,a2,col:STCOL[s]});a=a2});
+  // gradients
+  let defs='';segs.forEach((g,i)=>{defs+=`<linearGradient id="dg${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${shade(g.col,.22)}"/><stop offset="1" stop-color="${shade(g.col,-.06)}"/></linearGradient>`});
+  // side walls (front-facing portion, angle in (0,PI)); draw darker
+  let walls='';segs.forEach((g,i)=>{
+    const lo=Math.max(g.a1,0),hi=Math.min(g.a2,Math.PI);if(hi<=lo)return;
+    const top=arcPts(Rx,Ry,lo,hi,0),bot=arcPts(Rx,Ry,hi,lo,depth);
+    const dpath='M'+top.map(p=>p.join(' ')).join(' L')+' L'+bot.map(p=>p.join(' ')).join(' L')+' Z';
+    walls+=`<path d="${dpath}" fill="${shade(g.col,-.32)}"/>`;
+  });
+  // top faces (donut ring slices on ellipse)
+  let faces='';segs.forEach((g,i)=>{
+    const ot=arcPts(Rx,Ry,g.a1,g.a2,0),it=arcPts(rx,ry,g.a2,g.a1,0);
+    const fpath='M'+ot.map(p=>p.join(' ')).join(' L')+' L'+it.map(p=>p.join(' ')).join(' L')+' Z';
+    faces+=`<path d="${fpath}" fill="url(#dg${i})" stroke="#fff" stroke-width="1.2" stroke-opacity=".5"/>`;
+  });
+  // glossy highlight on top
+  const gloss=`<ellipse cx="${cx-Rx*0.18}" cy="${cy-Ry*0.42}" rx="${Rx*0.6}" ry="${Ry*0.42}" fill="url(#dgloss)" opacity=".5"/>`;
+  defs+=`<radialGradient id="dgloss" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>`;
+  const svg=`<svg viewBox="0 0 236 168" style="width:100%;max-width:280px;height:auto">
+    <defs>${defs}</defs>
+    <ellipse cx="${cx}" cy="${cy+depth+6}" rx="${Rx*0.92}" ry="${Ry*0.5}" fill="rgba(20,40,60,.10)"/>
+    ${walls}${faces}${gloss}
+    <text x="${cx}" y="${cy-2}" text-anchor="middle" font-size="34" font-weight="800" fill="#0b2c5c">${tot}</text>
+    <text x="${cx}" y="${cy+16}" text-anchor="middle" font-size="11" fill="#64748b">công việc</text>
+  </svg>`;
+  const leg=`<div class="donut-leg">`+order.map(s=>`<div class="li"><i style="background:${STCOL[s]}"></i><span>${s}</span><b>${counts[s]}</b><small>${Math.round(counts[s]/tot*100)}%</small></div>`).join('')+`</div>`;
+  document.getElementById('donut').innerHTML=svg+leg;
 }
 
 function renderPillars(){
@@ -2658,6 +2732,93 @@ document.getElementById('exportcsv').onclick=()=>{
   const blob=new Blob(['﻿'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='TienDo_CDS_PVEP_'+document.getElementById('asof').value+'.csv';a.click();
 };
+
+/* ===== Trợ lý AI (phân tích dữ liệu dashboard, offline) ===== */
+function aiPillarStats(k){const cs=CHILD.filter(r=>r.pillarKey===k);if(!cs.length)return null;
+  const plan=Math.round(cs.reduce((s,r)=>s+expectedPct(r),0)/cs.length);
+  const act=Math.round(cs.reduce((s,r)=>s+getPct(r),0)/cs.length);
+  const red=cs.filter(r=>rag(r)==='red').length;
+  const ninit=PARENTS.filter(r=>r.pillarKey===k).length;
+  return{plan,act,red,ninit,n:cs.length}}
+function aiOverall(){const plan=Math.round(CHILD.reduce((s,r)=>s+expectedPct(r),0)/CHILD.length);
+  const act=Math.round(CHILD.reduce((s,r)=>s+getPct(r),0)/CHILD.length);
+  const st={};CHILD.forEach(r=>{const s=getSt(r);st[s]=(st[s]||0)+1});
+  const red=CHILD.filter(r=>rag(r)==='red').length,amber=CHILD.filter(r=>rag(r)==='amber').length;
+  return{plan,act,st,red,amber}}
+function aiTaskCard(r){return `<div class="r2"><span><b>${r.id}</b> · ${r.isParent?r.task:r.sub}</span><span class="chip" style="background:${PCOL[r.pillarKey]}">${r.pillarKey}</span></div>
+  <div class="r2"><span>Thời gian</span><b>${fmt(r.s)} → ${fmt(r.e)}</b></div>
+  <div class="r2"><span>Chủ trì</span><b>${r.pic||(r.parent&&r.parent.pic)||'–'}</b></div>
+  <div class="r2"><span>KH đến nay / Thực tế</span><b>${expectedPct(r)}% / ${getPct(r)}%</b></div>
+  <div class="r2"><span>Trạng thái</span><b>${getSt(r)}</b></div>
+  <div class="r2"><span>RAG</span><b>${RAGTXT[rag(r)]}${CRIT.has(r.id)?' · ⚠️ đường găng':''}</b></div>`}
+
+function answerAI(qRaw){
+  const q=(qRaw||'').toLowerCase().trim();
+  const has=(...ws)=>ws.some(w=>q.includes(w));
+  // 1) tra cứu theo mã công việc (vd A1, B2.3, D1)
+  const m=qRaw.match(/\b([a-eA-E]\d+(?:\.\d+)?)\b/);
+  if(m){const r=byCode[m[1].toUpperCase()];if(r)return `<b>Chi tiết ${r.id}</b>${aiTaskCard(r)}${r.note?`<div style="margin-top:7px;color:#5b6577">📝 ${r.note}</div>`:''}`;}
+  // 2) đường găng
+  if(has('đường găng','duong gang','critical','găng','gang')){
+    return `<b>🛤️ Đường găng (${CP.length} công việc)</b> — chuỗi quyết định đích 31/12/2030, dự trữ ≈ 0:<div style="margin-top:6px">`+
+      CP.map((r,i)=>`<div class="r2"><span>${i+1}. <b>${r.id}</b> · ${r.sub}</span><b>${fmt(r.e)}</b></div>`).join('')+`</div><div style="margin-top:7px;color:#5b6577">Bất kỳ chậm trễ nào trên chuỗi này đều đẩy lùi toàn chương trình — cần ưu tiên giám sát.</div>`}
+  // 3) ngân sách / khái toán
+  if(has('ngân sách','ngan sach','khái toán','khai toan','tỷ','tien','chi phí','chi phi','vốn','von','budget')){
+    const byP=PARENTS.filter(r=>r.budget>0).sort((a,b)=>b.budget-a.budget);
+    if(!byP.length)return 'Hiện chưa có số liệu khái toán (budget = 0) cho các sáng kiến trong dữ liệu.';
+    const tot=byP.reduce((s,r)=>s+r.budget,0);
+    return `<b>💰 Khái toán 2026 ≈ ${(tot/1000).toFixed(1)} tỷ</b>, tập trung ở trụ cột D (nền tảng & hạ tầng):<div style="margin-top:6px">`+
+      byP.map(r=>`<div class="r2"><span><b>${r.id}</b> · ${r.task}</span><b>${(r.budget/1000).toFixed(2)} tỷ (${Math.round(r.budget/tot*100)}%)</b></div>`).join('')+`</div>`}
+  // 4) công việc chậm / rủi ro
+  if(has('chậm','cham','trễ','tre','rủi ro','rui ro','đỏ','do ','red','cảnh báo','canh bao')){
+    const red=CHILD.filter(r=>rag(r)==='red').sort((a,b)=>expectedPct(b)-expectedPct(a));
+    if(!red.length)return `✅ Tại ngày báo cáo (${fmt(ASOF)}) <b>không có công việc nào chậm nhiều (RAG đỏ)</b>. Có thể do số % thực tế chưa được cập nhật.`;
+    return `<b>⚠️ ${red.length} công việc đang chậm (RAG đỏ)</b> tại ${fmt(ASOF)}:<div style="margin-top:6px">`+
+      red.slice(0,12).map(r=>`<div class="r2"><span><b>${r.id}</b> · ${r.sub}</span><b>KH ${expectedPct(r)}% / TT ${getPct(r)}%</b></div>`).join('')+`</div>`+
+      (red.length>12?`<div style="margin-top:6px;color:#5b6577">…và ${red.length-12} công việc khác.</div>`:'')}
+  // 5) cần cập nhật
+  if(has('cập nhật','cap nhat','chưa báo cáo','update')){
+    const nu=CHILD.filter(r=>getSt(r)==='Cần cập nhật');
+    if(!nu.length)return '✅ Tất cả công việc đã được các Ban cập nhật.';
+    return `<b>🔄 ${nu.length} công việc cần các Ban cập nhật số liệu:</b><div style="margin-top:6px">`+
+      nu.map(r=>`<div class="r2"><span><b>${r.id}</b> · ${r.sub}</span><b>${r.pic||(r.parent&&r.parent.pic)||''}</b></div>`).join('')+`</div>`}
+  // 6) theo trụ cột
+  const pk=['a','b','c','d','e'].find(x=>new RegExp('trụ cột '+x+'|tru cot '+x+'|pillar '+x+'|^'+x+'$|cột '+x).test(q));
+  if(pk||has('trụ cột','tru cot','pillar')){
+    if(pk){const k=pk.toUpperCase();const s=aiPillarStats(k);if(!s)return'Không có dữ liệu cho trụ cột này.';
+      return `<b>${PNAME[k]}</b><div style="margin-top:6px"><div class="r2"><span>Số sáng kiến / công việc</span><b>${s.ninit} / ${s.n}</b></div>
+        <div class="r2"><span>Kế hoạch đến nay</span><b>${s.plan}%</b></div>
+        <div class="r2"><span>Thực tế</span><b>${s.act}%</b></div>
+        <div class="r2"><span>Công việc chậm (đỏ)</span><b>${s.red}</b></div></div>`}
+    return `<b>📊 Tiến độ 5 trụ cột</b> (KH / TT):<div style="margin-top:6px">`+
+      ['A','B','C','D','E'].map(k=>{const s=aiPillarStats(k);return s?`<div class="r2"><span>${PNAME[k]}</span><b>${s.plan}% / ${s.act}%${s.red?` · ${s.red}🔴`:''}</b></div>`:''}).join('')+`</div>`}
+  // 7) tổng quan / mặc định
+  if(has('tổng quan','tong quan','tiến độ','tien do','overview','báo cáo','bao cao','tình hình','tinh hinh')||q.length<3||has('hi','chào','xin chào','hello')){
+    const o=aiOverall();
+    return `<b>📈 Tổng quan tại ${fmt(ASOF)}</b><div style="margin-top:6px">
+      <div class="r2"><span>Tổng công việc theo dõi</span><b>${CHILD.length}</b></div>
+      <div class="r2"><span>Tiến độ KH đến nay / Thực tế</span><b>${o.plan}% / ${o.act}%</b></div>
+      <div class="r2"><span>Đang thực hiện</span><b>${o.st['Đang thực hiện']||0}</b></div>
+      <div class="r2"><span>Chưa bắt đầu</span><b>${o.st['Chưa bắt đầu']||0}</b></div>
+      <div class="r2"><span>Cần cập nhật</span><b>${o.st['Cần cập nhật']||0}</b></div>
+      <div class="r2"><span>Hoàn thành</span><b>${o.st['Hoàn thành']||0}</b></div>
+      <div class="r2"><span>RAG đỏ / vàng</span><b>${o.red} 🔴 / ${o.amber} 🟡</b></div>
+      <div class="r2"><span>Đường găng</span><b>${CP.length} công việc</b></div></div>`}
+  // fallback
+  return `Mình có thể trả lời về: <b>tổng quan tiến độ</b>, <b>từng trụ cột A–E</b>, <b>công việc đang chậm</b>, <b>cần cập nhật</b>, <b>đường găng</b>, <b>ngân sách</b>, hoặc tra cứu theo <b>mã công việc</b> (vd: A1, B2.3, D1). Bạn thử hỏi lại nhé!`;
+}
+function aiPush(role,html){const box=document.getElementById('aimsg');const d=document.createElement('div');d.className='abub '+(role==='u'?'u':'a');
+  d.innerHTML=(role==='a'?'<div class="aiava"><span class="dot"></span>TRỢ LÝ AI · PVEP CĐS</div>':'')+html;box.appendChild(d);box.scrollTop=box.scrollHeight}
+function aiAsk(q){if(!q||!q.trim())return;aiPush('u',q.replace(/</g,'&lt;'));const ans=answerAI(q);setTimeout(()=>aiPush('a',ans),180)}
+(function initAI(){
+  const chips=['Tổng quan tiến độ','Trụ cột A đến đâu?','Công việc nào đang chậm?','Đường găng','Ngân sách 2026','Cần cập nhật','Chi tiết B1'];
+  document.getElementById('aichips').innerHTML=chips.map(c=>`<button class="aichip">${c}</button>`).join('');
+  document.querySelectorAll('#aichips .aichip').forEach(b=>b.onclick=()=>{document.getElementById('aiq').value=b.textContent;aiAsk(b.textContent);document.getElementById('aiq').value=''});
+  document.getElementById('aisend').onclick=()=>{const i=document.getElementById('aiq');aiAsk(i.value);i.value=''};
+  document.getElementById('aiq').addEventListener('keydown',e=>{if(e.key==='Enter'){const i=e.target;aiAsk(i.value);i.value=''}});
+  aiPush('a','Xin chào! Mình là trợ lý phân tích dữ liệu Chuyển đổi số PVEP. Hỏi mình về tiến độ tổng thể, từng trụ cột, công việc đang chậm, đường găng, ngân sách, hay tra cứu theo mã công việc. Bấm một gợi ý bên dưới để bắt đầu nhé. 👇');
+})();
+
 refreshAll();
 </script>
 </body>
